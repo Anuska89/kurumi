@@ -511,6 +511,52 @@ def donate(update: Update, context: CallbackContext):
                 "Contact me in PM first to get donation information.")
 
 
+
+@run_async
+def not_callback_data(update, context):
+    query = update.callback_query
+    bot = context.bot
+    uptime = get_readable_time((time.time() - StartTime))
+    if query.data == "cb_":
+        bot.answer_callback_query(query.id, text="Hey! Here's My About")
+        query.message.edit_text(
+        text=""" 😶"""
+        )
+    elif query.data == "cb_back":
+        first_name = update.effective_user.first_name
+        query.message.edit_text(
+                PM_START_TEXT.format(
+                    escape_markdown(first_name),
+                    escape_markdown(context.bot.first_name)),
+                parse_mode=ParseMode.MARKDOWN,
+                disable_web_page_preview=True,
+                reply_markup=InlineKeyboardMarkup(
+                    [[
+                        InlineKeyboardButton(
+                            text="☑️ Add Kurumi Chan to your group",
+                            url="t.me/{}?startgroup=true".format(
+                                context.bot.username))
+                    ],
+                     [
+                         InlineKeyboardButton(
+                             text="🚨 Support 🚨",
+                             url=f"https://t.me/{SUPPORT_CHAT}"),
+                         InlineKeyboardButton(
+                             text="My luv ❤",
+                             url="https://t.me/A_lonelyPerson")
+                    ], 
+                     [
+                         InlineKeyboardButton(
+                             text="🔔 Updates of KURUMI 🔔",
+                             url="https://t.me/hiroiscool")
+                    ], 
+                     [
+                         InlineKeyboardButton(
+                             text="📳 Anime Chat Group 📳",
+                             url="https://t.me/WeebXWorld")
+                    ]]))
+
+
 def migrate_chats(update: Update, context: CallbackContext):
     msg = update.effective_message  # type: Optional[Message]
     if msg.migrate_to_chat_id:
